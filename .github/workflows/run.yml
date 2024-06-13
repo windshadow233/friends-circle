@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'crawler/**'
+      - 'database/**'
+      - 'main.py'
+      - 'config.yml'
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
@@ -24,10 +29,10 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@main
       with:
-        python-version: 3.8
+        python-version: '3.9'
+        cache: 'pip'
 
     - name: Install requirements
-      working-directory: ./friends-circle
       run: |
         pip install -r requirements.txt
 
@@ -39,7 +44,7 @@ jobs:
       env:
         PYTHONPATH: ${{ env.PYTHONPATH }}
       run: |
-        python ./friends-circle/main.py
+        python main.py
 
     - name: Push sqlite data
       uses: github-actions-x/commit@v2.9
