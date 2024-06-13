@@ -1,0 +1,55 @@
+name: update-friends-posts
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+env:
+  GITHUB_NAME: ${{ secrets.GH_NAME }}
+  GITHUB_EMAIL: ${{ secrets.GH_EMAIL }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Set up Python
+      uses: actions/setup-python@main
+      with:
+        python-version: 3.8
+
+    - name: Install requirements
+      working-directory: ./friends-circle
+      run: |
+        pip install -r requirements.txt
+
+    - name: set env
+      run: |
+        echo "BASE_PATH=$(pwd)" >> $GITHUB_ENV && echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+
+    - name: sqlite Update posts # sqlite
+      env:
+        PYTHONPATH: ${{ env.PYTHONPATH }}
+      run: |
+        python ./friends-circle/main.py
+
+    - name: Push sqlite data
+      uses: github-actions-x/commit@v2.9
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Update data.db"
+        files: data.db
+        rebase: 'true'
+        name: ${{ env.GITHUB_NAME }}
+        email: ${{ env.GITHUB_EMAIL }}
+
+    - name: keep alive
+      uses: gautamkrishnar/keepalive-workflow@master # keep workflows from being suspended when no commit for a long time
