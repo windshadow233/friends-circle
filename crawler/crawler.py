@@ -87,7 +87,7 @@ class Crawler:
                         f'Link: {link}\n'
                         f'Title: {title}\n'
                         f'Created: {created}\n'
-                        f'Updated: {updated}\n' + '-' * 100)
+                        f'Updated: {updated}\n' + '-' * 70)
         return posts
 
     def get_posts(self, friend_info):
