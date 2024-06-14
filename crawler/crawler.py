@@ -7,7 +7,6 @@ from datetime import datetime
 from func_timeout import func_set_timeout
 from func_timeout.exceptions import FunctionTimedOut
 from config import CONFIG
-from database.utils import db_manager
 feedparser.USER_AGENT = CONFIG['User-Agent']
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
