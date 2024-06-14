@@ -9,9 +9,9 @@ if __name__ == '__main__':
     ######################### Fetch Friend URLs ###############################
     crawler = Crawler()
     pool = Pool()
-    output = pool.map_async(crawler.get_friends, CONFIG['friend_pages']).get()
+    output = pool.map(crawler.get_friends, CONFIG['friend_pages'])
     friends = [_ for a in output for _ in a]
-    output = pool.map_async(crawler.get_posts, friends).get()
+    output = pool.map(crawler.get_posts, friends)
     for posts, friend in zip(output, friends):
         if not posts:
             friend['error'] = True
