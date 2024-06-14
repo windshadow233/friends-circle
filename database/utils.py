@@ -67,6 +67,8 @@ class DBManager():
         return conn
     
     def insert_friends(self, friends):
+        insert = 0
+        update = 0
         conn = self.db_init()
         cursor = conn.cursor()
         for friend in friends:
@@ -80,10 +82,17 @@ class DBManager():
                 INSERT INTO friends (name, link, avatar, error)
                 VALUES (?, ?, ?, ?);
                 ''', (friend['name'], friend['link'], friend['avatar'], friend['error']))
+                insert += 1
+            else:
+                update += 1
+        logging.info(f'\n更新 {update} 条友链'
+                     f'\n新增 {insert} 条友链')
         conn.commit()
         conn.close()
 
     def insert_posts(self, posts):
+        insert = 0
+        update = 0
         conn = self.db_init()
         cursor = conn.cursor()
         for post in posts:
@@ -97,6 +106,11 @@ class DBManager():
                 INSERT INTO posts (title, link, created, updated, author, avatar)
                 VALUES (?, ?, ?, ?, ?, ?);
                 ''', (post['title'], post['link'], post['created'], post['updated'], post['author'], post['avatar']))
+                insert += 1
+            else:
+                update += 1
+        logging.info(f'\n更新 {update} 篇文章'
+                     f'\n新增 {insert} 篇文章')
         conn.commit()
         conn.close()
 
@@ -130,6 +144,7 @@ class DBManager():
                 out_date_post += 1
         conn.commit()
         conn.close()
+        logging.info(f'\n共删除 {out_date_post} 篇文章')
         return out_date_post
 
 db_manager = DBManager()

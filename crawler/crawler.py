@@ -2,14 +2,12 @@ import feedparser
 import requests
 from bs4 import BeautifulSoup
 import time
-import logging
 from datetime import datetime
 from func_timeout import func_set_timeout
 from func_timeout.exceptions import FunctionTimedOut
-from config import CONFIG
+from config import *
 feedparser.USER_AGENT = CONFIG['User-Agent']
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 class Crawler:

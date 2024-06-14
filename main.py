@@ -21,8 +21,7 @@ if __name__ == '__main__':
     ############################ DB Management ################################
     db_manager.insert_friends(friends)
     db_manager.insert_posts(posts)
-    out_date_post = db_manager.outdate_clean(CONFIG['OUTDATE_CLEAN'])
-    logging.info(f'\n共删除{out_date_post}篇文章')
+    db_manager.outdate_clean(CONFIG['OUTDATE_CLEAN'])
     friend_num, lost_friends, article_num = db_manager.statistic()
     logging.info(f'\n友链数: {friend_num}'
                  f'\n失联、不活跃友链数: {len(lost_friends)}'
