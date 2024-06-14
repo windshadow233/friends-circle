@@ -1,8 +1,7 @@
 import feedparser
 import requests
 from bs4 import BeautifulSoup
-import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from func_timeout import func_set_timeout
 from func_timeout.exceptions import FunctionTimedOut
 from config import *
@@ -67,17 +66,17 @@ class Crawler:
             link = entry['link']
             avatar = friend_info['avatar']
             author = friend_info['name']
-            if (datetime.now() - datetime(*entry['updated_parsed'][:6])).days > CONFIG['OUTDATE_CLEAN']:
+            created = datetime(*entry['published_parsed'][:6]) + timedelta(hours=8)
+            updated = datetime(*entry['updated_parsed'][:6]) + timedelta(hours=8)
+            if (datetime.now() - updated).days > CONFIG['OUTDATE_CLEAN']:
                 continue
-            created = time.strftime(r'%Y-%m-%d', entry['published_parsed'])
-            updated = time.strftime(r'%Y-%m-%d', entry['updated_parsed'])
             post = {
                 'title': title,
                 'link': link,
                 'avatar': avatar,
                 'author': author,
-                'created': created,
-                'updated': updated
+                'created': created.strftime(r'%Y-%m-%d'),
+                'updated': updated.strftime(r'%Y-%m-%d')
             }
             posts.append(post)
             logging.info(f'\nAuthor: {author}\n'
