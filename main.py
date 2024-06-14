@@ -12,9 +12,6 @@ if __name__ == '__main__':
     output = pool.map(crawler.get_friends, CONFIG['friend_pages'])
     friends = [_ for a in output for _ in a]
     output = pool.map(crawler.get_posts, friends)
-    for posts, friend in zip(output, friends):
-        if not posts:
-            friend['error'] = True
 
     posts = [_ for a in output for _ in a]
 
@@ -22,6 +19,7 @@ if __name__ == '__main__':
     db_manager.insert_friends(friends)
     db_manager.insert_posts(posts)
     db_manager.outdate_clean(CONFIG['OUTDATE_CLEAN'])
+    db_manager.update_friends_status()
     friend_num, lost_friends, article_num = db_manager.statistic()
     logging.info(f'\n友链数: {friend_num}'
                  f'\n失联、不活跃友链数: {len(lost_friends)}'

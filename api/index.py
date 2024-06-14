@@ -67,4 +67,4 @@ def friend_status(days: int = OUTDATE_CLEAN):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", reload=True)
+    uvicorn.run("index:app", host="0.0.0.0", reload=True)

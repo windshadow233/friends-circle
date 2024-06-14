@@ -35,15 +35,12 @@ class Crawler:
                 link = get_value(selectors['link'])
                 avatar = get_value(selectors['avatar'])
                 feed = get_value(selectors['feed'])
-                error = True
-                if feed:
-                    error = False
                 friends.append({
                     'name': name,
                     'link': link,
                     'avatar': avatar,
                     'feed': feed,
-                    'error': error
+                    'error': False
                 })
             return friends
         except Exception:

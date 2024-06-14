@@ -152,7 +152,7 @@ def query_post(user, num, rule):
         cursor.execute("SELECT * FROM friends WHERE error=0 ORDER BY RANDOM() LIMIT 1")
         user = cursor.fetchone()
     else:
-        cursor.execute('SELECT * FROM friends WHERE name LIKE ?', ('%{}%'.format(user),))
+        cursor.execute('SELECT * FROM friends WHERE name = ?', (user,))
         user = cursor.fetchone()
 
     # 如果链接不匹配，则返回错误信息
@@ -160,7 +160,7 @@ def query_post(user, num, rule):
         return {"message": "not found"}
 
     # 查询用户的文章
-    cursor.execute('SELECT * FROM posts WHERE author LIKE ? ORDER BY {} LIMIT ?'.format(rule), ('%{}%'.format(user['name']), num))
+    cursor.execute('SELECT * FROM posts WHERE author = ? ORDER BY {} LIMIT ?'.format(rule), (user['name'], num))
     posts = cursor.fetchall()
 
     conn.close()

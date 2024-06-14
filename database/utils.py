@@ -146,5 +146,22 @@ class DBManager():
         conn.close()
         logging.info(f'\n共删除 {out_date_post} 篇文章')
         return out_date_post
+    
+    def update_friends_status(self):
+        conn = self.db_init()
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, name FROM friends')
+        friends = cursor.fetchall()
+
+        for friend_id, friend_name in friends:
+            cursor.execute('SELECT COUNT(*) FROM posts WHERE author = ?', (friend_name,))
+            post_count = cursor.fetchone()[0]
+            if post_count == 0:
+                cursor.execute('UPDATE friends SET error = 1 WHERE id = ?', (friend_id,))
+            else:
+                cursor.execute('UPDATE friends SET error = 0 WHERE id = ?', (friend_id,))
+
+        conn.commit()
+        conn.close()
 
 db_manager = DBManager()
