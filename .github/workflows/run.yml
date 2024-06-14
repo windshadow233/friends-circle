@@ -56,5 +56,11 @@ jobs:
         name: ${{ env.GITHUB_NAME }}
         email: ${{ env.GITHUB_EMAIL }}
 
-    - name: keep alive
-      uses: gautamkrishnar/keepalive-workflow@master # keep workflows from being suspended when no commit for a long time
+  keepalive-job:
+    name: Keepalive Workflow
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v2
