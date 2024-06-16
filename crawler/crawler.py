@@ -1,6 +1,7 @@
 import feedparser
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse, urlunparse
 from datetime import datetime, timedelta
 from func_timeout import func_set_timeout
 from func_timeout.exceptions import FunctionTimedOut
@@ -12,6 +13,13 @@ feedparser.USER_AGENT = CONFIG['User-Agent']
 class Crawler:
     def __init__(self):
         self.headers = {'User-Agent': CONFIG['User-Agent']}
+
+    @staticmethod
+    def replace_hostname(url, old_hostname, new_hostname):
+        parsed_url = urlparse(url)
+        new_netloc = parsed_url.netloc.replace(old_hostname, new_hostname)
+        new_url = urlunparse(parsed_url._replace(netloc=new_netloc))
+        return new_url
 
     def get_friends(self, friend_page_config):
         friends = []
@@ -67,6 +75,8 @@ class Crawler:
             updated = datetime(*entry['updated_parsed'][:6]) + timedelta(hours=8)
             if (datetime.now() - updated).days > CONFIG['OUTDATE_CLEAN']:
                 continue
+            if author in CONFIG['url_replace']:
+                link = self.replace_hostname(link, CONFIG['url_replace'][author]['old'], CONFIG['url_replace'][author]['new'])
             post = {
                 'title': title,
                 'link': link,

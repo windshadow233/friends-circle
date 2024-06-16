@@ -129,18 +129,18 @@ class DBManager():
         conn = self.db_init()
         cursor = conn.cursor()
         out_date_post = 0
-        cursor.execute('SELECT link, updated FROM posts')
+        cursor.execute('SELECT id, updated FROM posts')
         posts = cursor.fetchall()
         for query_item in posts:
-            link = query_item['link']
+            id_ = query_item['id']
             updated = query_item['updated']
             try:
-                query_time = datetime.strptime(updated, r"%Y-%m-%d")
-                if (datetime.now() - query_time).days > days:
-                    cursor.execute("DELETE FROM posts WHERE link = ?", (link,))
+                update_time = datetime.strptime(updated, r"%Y-%m-%d")
+                if (datetime.now() - update_time).days > days:
+                    cursor.execute("DELETE FROM posts WHERE id = ?", (id_,))
                     out_date_post += 1
             except:
-                cursor.execute("DELETE FROM posts WHERE link = ?", (link,))
+                cursor.execute("DELETE FROM posts WHERE id = ?", (id_,))
                 out_date_post += 1
         conn.commit()
         conn.close()
