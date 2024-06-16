@@ -66,7 +66,8 @@ class Crawler:
         status = feeds['status']
         if status != 200:
             return []
-        for entry in entries[:max_posts]:
+        success_num = 0
+        for entry in entries:
             title = entry['title']
             link = entry['link']
             avatar = friend_info['avatar']
@@ -91,6 +92,9 @@ class Crawler:
                         f'Title: {title}\n'
                         f'Created: {created}\n'
                         f'Updated: {updated}\n' + '-' * 70)
+            success_num += 1
+            if success_num > max_posts:
+                break
         return posts
 
     def get_posts(self, friend_info):
