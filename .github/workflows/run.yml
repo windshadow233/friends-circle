@@ -1,14 +1,6 @@
 name: update-friends-posts
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'crawler/**'
-      - 'database/**'
-      - 'main.py'
-      - 'config.yml'
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:

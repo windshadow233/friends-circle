@@ -144,7 +144,7 @@ def query_random_post(num):
     return post_list_json[0] if len(post_list_json) == 1 else post_list_json
 
 
-def query_post(user, num, rule):
+def query_post(user, num):
     conn = db_manager.db_init()
     cursor = conn.cursor()
     if user is None:
@@ -160,7 +160,7 @@ def query_post(user, num, rule):
         return {"message": "not found"}
 
     # 查询用户的文章
-    cursor.execute('SELECT * FROM posts WHERE author = ? ORDER BY {} LIMIT ?'.format(rule), (user['name'], num))
+    cursor.execute('SELECT * FROM posts WHERE author = ? ORDER BY RANDOM() LIMIT ?', (user['name'], num))
     posts = cursor.fetchall()
 
     conn.close()

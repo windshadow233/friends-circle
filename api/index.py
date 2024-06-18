@@ -49,13 +49,12 @@ def random_post(num: int = 1):
 
 
 @app.get("/post", tags=["PUBLIC_API"], summary="返回指定链接的所有文章")
-def post(user: str = None, num: int = -1, rule: str = "created"):
+def post(user: str = None, num: int = -1):
     """返回指定链接的数据库内文章信息列表
     - user: 作者名
     - num: 指定链接的文章信息列表 按rule排序后的顺序的前num篇
-    - rule: 文章排序规则（创建时间/更新时间）
     """
-    return query_post(user, num, rule)
+    return query_post(user, num)
 
 
 @app.get("/friendstatus", tags=["PUBLIC_API"], summary="按照指定时间划分失联/未失联的友链信息")
