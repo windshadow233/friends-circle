@@ -93,7 +93,7 @@ class Crawler:
                         f'Created: {created}\n'
                         f'Updated: {updated}\n' + '-' * 70)
             success_num += 1
-            if success_num > max_posts:
+            if success_num >= max_posts:
                 break
         return posts
 
