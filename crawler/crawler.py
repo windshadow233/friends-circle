@@ -64,7 +64,7 @@ class Crawler:
         feeds = feedparser.parse(feed_url)
         entries = feeds['entries']
         status = feeds['status']
-        if status != 200:
+        if status != 200 and status != 301:
             return []
         success_num = 0
         for entry in entries:
