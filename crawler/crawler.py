@@ -76,7 +76,7 @@ class Crawler:
             updated = datetime(*entry['updated_parsed'][:6]) + timedelta(hours=8)
             if (datetime.now() - updated).days > CONFIG['OUTDATE_CLEAN']:
                 continue
-            if author in CONFIG['url_replace']:
+            if CONFIG['url_replace'] is not None and author in CONFIG['url_replace']:
                 link = self.replace_hostname(link, CONFIG['url_replace'][author]['old'], CONFIG['url_replace'][author]['new'])
             post = {
                 'title': title,
