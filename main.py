@@ -14,6 +14,7 @@ if __name__ == '__main__':
     output = pool.map(crawler.get_posts, friends)
 
     posts = [_ for a in output for _ in a]
+    print(len(posts))
 
     ############################ DB Management ################################
     db_manager.insert_friends(friends)
