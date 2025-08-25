@@ -16,7 +16,7 @@ if __name__ == '__main__':
     posts = [_ for a in output for _ in a]
 
     ############################ DB Management ################################
-    db_manager.insert_friends(friends)
+    db_manager.sync_friends_and_posts(friends)
     db_manager.insert_posts(posts)
     db_manager.outdate_clean(CONFIG['OUTDATE_CLEAN'])
     db_manager.update_friends_status()

@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from .utils import *
 
 def query_all(li, start: int = 0, end: int = -1, rule: str = "updated"):
-    conn = db_manager.db_init()
+    conn = db_manager.get_db_connection()
     cursor = conn.cursor()
 
     # 获取文章总数
@@ -59,7 +59,7 @@ def query_all(li, start: int = 0, end: int = -1, rule: str = "updated"):
     return data
 
 def query_friend():
-    conn = db_manager.db_init()
+    conn = db_manager.get_db_connection()
     cursor = conn.cursor()
 
     # 查询前1000个好友
@@ -87,7 +87,7 @@ def query_random_friend(num):
     if num < 1:
         return {"message": "param 'num' error"}
 
-    conn = db_manager.db_init()
+    conn = db_manager.get_db_connection()
     cursor = conn.cursor()
 
     # 查询 num 个随机好友
@@ -116,7 +116,7 @@ def query_random_post(num):
     if num < 1:
         return {"message": "param 'num' error"}
 
-    conn = db_manager.db_init()
+    conn = db_manager.get_db_connection()
     cursor = conn.cursor()
 
     # 查询 num 个随机文章
@@ -145,7 +145,7 @@ def query_random_post(num):
 
 
 def query_post(user, num):
-    conn = db_manager.db_init()
+    conn = db_manager.get_db_connection()
     cursor = conn.cursor()
     if user is None:
         # 查询没有错误的用户，随机排序并选择第一个
@@ -191,7 +191,7 @@ def query_post(user, num):
 
 def query_friend_status(days):
     # 初始化数据库连接
-    conn = db_manager.db_init()
+    conn = db_manager.get_db_connection()
     cursor = conn.cursor()
 
     # 查询所有文章
