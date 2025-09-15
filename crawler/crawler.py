@@ -30,19 +30,19 @@ class Crawler:
             res.encoding = 'utf-8'
             parsed = BeautifulSoup(res.text, 'lxml')
             items = parsed.select(selectors['item'])
+            def get_value(item, rule):
+                try:
+                    if 'attr' in rule:
+                        return item.select_one(rule['selector']).get(rule['attr'])
+                    else:
+                        return item.select_one(rule['selector']).text
+                except Exception:
+                    return None
             for item in items:
-                def get_value(rule):
-                    try:
-                        if 'attr' in rule:
-                            return item.select_one(rule['selector']).get(rule['attr'])
-                        else:
-                            return item.select_one(rule['selector']).text
-                    except Exception:
-                        return None
-                name = get_value(selectors['name'])
-                link = get_value(selectors['link'])
-                avatar = get_value(selectors['avatar'])
-                feed = get_value(selectors['feed'])
+                name = get_value(item, selectors['name'])
+                link = get_value(item, selectors['link'])
+                avatar = get_value(item, selectors['avatar'])
+                feed = get_value(item, selectors['feed'])
                 friends.append({
                     'name': name,
                     'link': link,
